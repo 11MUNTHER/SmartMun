@@ -26,8 +26,45 @@
       border-bottom: 1px solid #ccc;
     }
 
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #000;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .logo-icon div {
+      height: 2px;
+      background: #000;
+      position: absolute;
+      left: 6px;
+    }
+
+    .logo-icon .line1 {
+      width: 14px;
+      top: 6px;
+    }
+
+    .logo-icon .line2 {
+      width: 16px;
+      top: 12px;
+    }
+
+    .logo-icon .line3 {
+      width: 10px;
+      top: 18px;
+    }
+
     header h1 {
-      font-size: 32px;
+      font-size: 28px;
       margin: 0;
     }
 
@@ -104,7 +141,14 @@
 </head>
 <body>
   <header>
-    <h1>بوست ذكي</h1>
+    <div class="logo-wrapper">
+      <div class="logo-icon">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+      <h1>بوست ذكي</h1>
+    </div>
   </header>
 
   <main>
