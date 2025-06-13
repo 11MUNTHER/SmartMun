@@ -38,60 +38,36 @@
       background: none;
       border: none;
       color: white;
+      z-index: 1001;
     }
 
-    nav {
-      display: none;
-      flex-direction: column;
+    .side-nav {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      height: 100%;
+      width: 250px;
       background-color: #000;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 100%;
-      animation: slideDown 0.3s ease forwards;
-    }
-
-    nav a {
-      padding: 10px 15px;
-      color: white;
-      text-decoration: none;
-      border-top: 1px solid #333;
-    }
-
-    nav a:hover {
-      background-color: #222;
-    }
-
-    .show {
       display: flex;
+      flex-direction: column;
+      padding-top: 60px;
+      transition: right 0.3s ease;
+      z-index: 1000;
     }
 
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .side-nav.show {
+      right: 0;
     }
 
-    @media(min-width: 768px) {
-      nav {
-        display: flex !important;
-        position: static;
-        flex-direction: row;
-        background: none;
-        animation: none;
-      }
-      .menu-toggle {
-        display: none;
-      }
-      nav a {
-        border: none;
-        color: white;
-      }
+    .side-nav a {
+      padding: 15px 20px;
+      text-decoration: none;
+      color: #fff;
+      border-bottom: 1px solid #333;
+    }
+
+    .side-nav a:hover {
+      background-color: #222;
     }
 
     main {
@@ -147,12 +123,13 @@
   <header>
     <div class="logo">SmartMun</div>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <nav id="nav">
-      <a href="index.html">الرئيسية</a>
-      <a href="#" onclick="toggleTheme()">الوضع</a>
-      <a href="about.html">حول</a>
-    </nav>
   </header>
+
+  <div id="sideNav" class="side-nav">
+    <a href="index.html">الرئيسية</a>
+    <a href="#" onclick="toggleTheme()">الوضع</a>
+    <a href="about.html">حول</a>
+  </div>
 
   <main>
     <input id="apiKey" type="text" placeholder="🔐 أدخل مفتاح OpenAI API هنا (سرّياً)" />
@@ -164,8 +141,8 @@
 
   <script>
     function toggleMenu() {
-      const nav = document.getElementById('nav');
-      nav.classList.toggle('show');
+      const sideNav = document.getElementById('sideNav');
+      sideNav.classList.toggle('show');
     }
 
     function toggleTheme() {
