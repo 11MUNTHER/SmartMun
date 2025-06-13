@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مولّد البوستات العدني ✨</title>
+  <title>بوست ذكي 🤖✍️</title>
   <style>
     body {
       background: linear-gradient(145deg, #1a1a2e, #16213e);
@@ -19,14 +19,14 @@
 
     h1 {
       margin-bottom: 30px;
-      font-size: 32px;
+      font-size: 30px;
       color: #ffcc00;
     }
 
     textarea {
       width: 100%;
       max-width: 500px;
-      height: 120px;
+      height: 100px;
       padding: 15px;
       font-size: 16px;
       border-radius: 12px;
@@ -35,6 +35,18 @@
       outline: none;
       background: #2c2c54;
       color: white;
+    }
+
+    input[type="text"] {
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 8px;
+      border: none;
+      background: #2c2c54;
+      color: white;
+      outline: none;
     }
 
     button {
@@ -64,31 +76,55 @@
       font-size: 18px;
       line-height: 1.6;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-
-    @media (max-width: 600px) {
-      textarea, .post {
-        font-size: 16px;
-      }
+      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-  <h1>✍️ اكتب بوستك العدني الحماسي</h1>
-  <textarea id="inputText" placeholder="اكتب موضوع البوست هنا..."></textarea>
-  <button onclick="generatePost()">🎯 توليد البوست</button>
+  <h1>بوست ذكي 🤖✍️</h1>
+
+  <input id="apiKey" type="text" placeholder="🔐 أدخل مفتاح OpenAI API هنا (سرّياً)" />
+  <textarea id="inputText" placeholder="اكتب فكرة البوست أو كلمه بسيطة..."></textarea>
+  <button onclick="generatePost()">🎯 توليد منشور ذكي</button>
   <div id="postOutput" class="post" style="display:none;"></div>
 
   <script>
-    function generatePost() {
+    async function generatePost() {
+      const apiKey = document.getElementById("apiKey").value.trim();
       const input = document.getElementById("inputText").value.trim();
       const output = document.getElementById("postOutput");
-      if (input === "") {
-        output.style.display = "none";
+
+      if (!apiKey || !input) {
+        alert("رجاءً أدخل الـ API Key والفكرة!");
         return;
       }
-      output.innerText = `🚀 منشور جديد:\n\n${input}`;
+
+      output.innerText = "⏳ جاري توليد البوست...";
       output.style.display = "block";
+
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + apiKey,
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [
+            { role: "system", content: "اكتب منشور بسيط وعفوي باللهجة العدنية حسب الموضوع." },
+            { role: "user", content: input }
+          ],
+          max_tokens: 150,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.choices && data.choices.length > 0) {
+        output.innerText = data.choices[0].message.content.trim();
+      } else {
+        output.innerText = "⚠️ حصلت مشكلة في التوليد... تأكد من الـ API Key.";
+      }
     }
   </script>
 </body>
