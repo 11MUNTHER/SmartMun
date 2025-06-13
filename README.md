@@ -1,218 +1,230 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SmartMun</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-light: #ffffff;
-      --bg-dark: #121212;
-      --text-light: #000000;
-      --text-dark: #ffffff;
-      --primary: #1f1f1f;
-      --secondary: #f0f0f0;
+    * {
+      box-sizing: border-box;
     }
 
     body {
       font-family: 'Cairo', sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
       margin: 0;
-      padding: 0;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    .light-mode {
-      background-color: var(--bg-light);
-      color: var(--text-light);
+      background-color: #fff;
+      color: #000;
     }
 
     header {
-      background-color: #1a1a1a;
-      color: white;
-      padding: 15px 20px;
+      background-color: #000;
+      color: #fff;
+      padding: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
     }
 
-    .light-mode header {
-      background-color: #e0e0e0;
-      color: black;
-    }
-
-    .nav-links a {
-      color: inherit;
-      text-decoration: none;
-      margin-left: 15px;
+    .logo {
+      font-size: 22px;
       font-weight: bold;
     }
 
-    main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-    }
-
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    textarea,
-    input[type="text"] {
-      width: 100%;
-      max-width: 500px;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 8px;
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
       border: none;
-      margin-bottom: 10px;
-      background: #2c2c2c;
       color: white;
-      outline: none;
     }
 
-    .light-mode textarea,
-    .light-mode input[type="text"] {
-      background: #f5f5f5;
-      color: black;
+    nav {
+      display: none;
+      flex-direction: column;
+      background-color: #000;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 100%;
+      animation: slideDown 0.3s ease forwards;
+    }
+
+    nav a {
+      padding: 10px 15px;
+      color: white;
+      text-decoration: none;
+      border-top: 1px solid #333;
+    }
+
+    nav a:hover {
+      background-color: #222;
+    }
+
+    .show {
+      display: flex;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media(min-width: 768px) {
+      nav {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        background: none;
+        animation: none;
+      }
+      .menu-toggle {
+        display: none;
+      }
+      nav a {
+        border: none;
+        color: white;
+      }
+    }
+
+    main {
+      padding: 30px 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
     }
 
     button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 14px;
+      padding: 12px 24px;
+      background-color: #000;
+      color: #fff;
+      font-size: 16px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      background: #333;
-      color: white;
-      transition: 0.3s;
     }
 
     button:hover {
-      background: #555;
+      background-color: #333;
     }
 
     .post {
       margin-top: 20px;
-      background-color: #1e1e2f;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 500px;
-      width: 100%;
-      font-size: 16px;
-      line-height: 1.6;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      white-space: pre-wrap;
-      position: relative;
-    }
-
-    .light-mode .post {
-      background-color: #eee;
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 8px;
       color: #000;
+      white-space: pre-wrap;
     }
 
-    #copyBtn {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 12px;
-      padding: 4px 8px;
-      background-color: #555;
-      color: white;
+    .copy-btn {
+      margin-top: 10px;
+      background-color: #444;
+      color: #fff;
       border: none;
+      padding: 10px;
       border-radius: 6px;
       cursor: pointer;
-    }
-
-    @media screen and (max-width: 600px) {
-      main {
-        padding: 20px 10px;
-      }
-      textarea,
-      input[type="text"],
-      .post {
-        font-size: 14px;
-      }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="logo">SmartMun</div>
-    <div class="nav-links">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav id="nav">
       <a href="index.html">الرئيسية</a>
-      <a href="about.html">حول</a>
       <a href="#" onclick="toggleTheme()">الوضع</a>
-    </div>
+      <a href="about.html">حول</a>
+    </nav>
   </header>
+
   <main>
-    <h1>منشور ذكي</h1>
-    <input id="apiKey" type="text" placeholder="أدخل مفتاح OpenAI API هنا" />
+    <input id="apiKey" type="text" placeholder="🔐 أدخل مفتاح OpenAI API هنا (سرّياً)" />
     <textarea id="inputText" placeholder="اكتب فكرة البوست أو كلمه بسيطة..."></textarea>
-    <button onclick="generatePost()">توليد المنشور</button>
+    <button onclick="generatePost()">توليد منشور</button>
     <div id="postOutput" class="post" style="display:none;"></div>
-    <audio id="dingSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
+    <button class="copy-btn" onclick="copyPost()" style="display:none;">نسخ المنشور</button>
   </main>
+
   <script>
+    function toggleMenu() {
+      const nav = document.getElementById('nav');
+      nav.classList.toggle('show');
+    }
+
     function toggleTheme() {
-      document.body.classList.toggle("light-mode");
+      const body = document.body;
+      if (body.style.backgroundColor === 'black') {
+        body.style.backgroundColor = 'white';
+        body.style.color = 'black';
+      } else {
+        body.style.backgroundColor = 'black';
+        body.style.color = 'white';
+      }
+    }
+
+    function copyPost() {
+      const post = document.getElementById("postOutput").innerText;
+      navigator.clipboard.writeText(post).then(() => {
+        alert("تم نسخ المنشور!");
+      });
     }
 
     async function generatePost() {
       const apiKey = document.getElementById("apiKey").value.trim();
       const input = document.getElementById("inputText").value.trim();
       const output = document.getElementById("postOutput");
-      const dingSound = document.getElementById("dingSound");
+      const copyBtn = document.querySelector(".copy-btn");
 
       if (!apiKey || !input) {
         alert("رجاءً أدخل الـ API Key والفكرة!");
         return;
       }
 
-      output.innerText = "جاري التوليد...";
+      output.innerText = "⏳ جاري توليد البوست...";
       output.style.display = "block";
 
-      try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + apiKey,
-          },
-          body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [
-              { role: "system", content: "اكتب منشور بسيط باللهجة العدنية حسب الموضوع." },
-              { role: "user", content: input }
-            ],
-            max_tokens: 150,
-          }),
-        });
-
-        const data = await response.json();
-
-        if (data.choices && data.choices.length > 0) {
-          output.innerHTML = `<button id=\"copyBtn\" onclick=\"copyText()\">نسخ</button>` + data.choices[0].message.content.trim();
-          dingSound.play();
-        } else {
-          output.innerText = "حصلت مشكلة... تأكد من الـ API Key.";
-        }
-      } catch (error) {
-        output.innerText = "فشل الاتصال. تأكد من الانترنت والـ API Key.";
-      }
-    }
-
-    function copyText() {
-      const output = document.getElementById("postOutput");
-      const text = output.innerText.replace("نسخ", "").trim();
-      navigator.clipboard.writeText(text).then(() => {
-        alert("تم نسخ المنشور!");
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + apiKey,
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [
+            { role: "system", content: "اكتب منشور بسيط باللهجة العدنية حسب الموضوع." },
+            { role: "user", content: input }
+          ],
+          max_tokens: 150,
+        }),
       });
+
+      const data = await response.json();
+
+      if (data.choices && data.choices.length > 0) {
+        output.innerText = data.choices[0].message.content.trim();
+        copyBtn.style.display = "inline-block";
+        new Audio("https://cdn.pixabay.com/download/audio/2023/03/06/audio_c73d42b2e2.mp3?filename=interface-124464.mp3").play();
+      } else {
+        output.innerText = "⚠️ حصلت مشكلة في التوليد... تأكد من الـ API Key.";
+      }
     }
   </script>
 </body>
